@@ -45,7 +45,6 @@ public class MetacatIndexPoller {
 
         config.setGroupConfig(groupConfig);
 
-
         try {
             client = HazelcastClient.newHazelcastClient(config);
         } catch (Exception ex) {
@@ -92,7 +91,7 @@ public class MetacatIndexPoller {
         }
     }
 
-    private static void listAll(IMap<Identifier, Object>  queue) {
+    private static void listAll(IMap<Identifier, Object> queue) {
         Iterator<Map.Entry<Identifier, Object>> it = queue.entrySet().iterator();
 
         while (it.hasNext()) {
