@@ -95,8 +95,8 @@ public class MetacatIndexPoller {
         Iterator<Map.Entry<Identifier, Object>> it = queue.entrySet().iterator();
 
         while (it.hasNext()) {
-            Map.Entry entry = it.next();
-            Identifier identifier = (Identifier)entry.getKey();
+            Map.Entry<Identifier,Object> entry = it.next();
+            Identifier identifier = (Identifier) entry.getKey();
 
             System.out.println(identifier.getValue().toString());
         }
