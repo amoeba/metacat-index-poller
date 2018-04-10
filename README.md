@@ -1,6 +1,6 @@
 # MetacatIndexSizePoller
 
-Java mini-utility to periodically poll a Metacat index task queue (a Hazelcast Map) for its size.
+Java mini-utility to periodically poll a Metacat index task queue (a Hazelcast Map) for its size or list the objects inside it.
 
 ## Running
 
@@ -16,8 +16,17 @@ ssh -L 5701:localhost:5701 {REMOTE_HOST}
 
 _Replace with the appropriate Hazelcast `groupName` and `groupPassword`_
 
+With Maven `exec:java`:
+
 ```sh
-mvn exec:java -Dexec.mainClass="Main" -Dexec.args="groupName={NAME} groupPassword={PASSWORD}"
+mvn -X exec:java -Dexec.mainClass="edu.ucsb.nceas.MetacatIndexPoller" -Dexec.args="groupName={NAME} groupPassword={PASSWORD}"
+```
+
+As a JAR:
+
+```sh
+mvn package
+java -cp target/metacat-index-poller-1.0-SNAPSHOT-jar-with-dependencies.jar edu.ucsb.nceas.MetacatIndexPoller groupName={NAME} groupPassword={PASSWORD}
 ```
 
 ## Options
@@ -34,5 +43,5 @@ Configurable options include:
 Override any of these by adding to `-Dexec.args` (see above for an example) following a pattern of `{option}={value}`. For example, to set a custom delay of 6 seconds, run:
 
 ```sh
-mvn exec:java -Dexec.mainClass="Main" -Dexec.args="delay=6000"
+mvn -X exec:java -Dexec.mainClass="edu.ucsb.nceas.MetacatIndexPoller" -Dexec.args="delay=6000"
 ```
