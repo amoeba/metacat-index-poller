@@ -18,7 +18,7 @@ import org.dataone.service.types.v1.Identifier;
  * @author cjones
  *
  */
-public class Main {
+public class MetacatIndexPoller {
     // Options (configurable via command line args)
     private static String action = "poll";
     private static String address = "127.0.0.1:5701";
