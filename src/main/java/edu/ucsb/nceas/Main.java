@@ -1,14 +1,15 @@
+package edu.ucsb.nceas;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import com.hazelcast.client.ClientConfig;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.config.GroupConfig;
 import com.hazelcast.core.IMap;
 
-import edu.ucsb.nceas.metacat.common.index.IndexTask;
 import org.dataone.service.types.v1.Identifier;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Polls the index queue in a local Metacat, or
@@ -17,7 +18,7 @@ import java.util.Map;
  * @author cjones
  *
  */
-public class MetacatIndexSizePoller {
+public class Main {
     // Options (configurable via command line args)
     private static String action = "poll";
     private static String address = "127.0.0.1:5701";
@@ -26,8 +27,8 @@ public class MetacatIndexSizePoller {
     private static int delay = 1000; // in milliseconds
     private static int duration = 60000; // in milliseconds
 
-    private static IMap<Identifier, IndexTask> indexQueue = null;
-    private static HazelcastClient hzClient = null;
+    private static IMap<Identifier, Object> indexQueue = null;
+    private static HazelcastClient client = null;
 
     /**
      * @param args See implementation in parseArguments
@@ -46,14 +47,14 @@ public class MetacatIndexSizePoller {
 
 
         try {
-            hzClient = HazelcastClient.newHazelcastClient(config);
+            client = HazelcastClient.newHazelcastClient(config);
         } catch (Exception ex) {
             ex.printStackTrace();
             System.exit(1);
         }
 
         try {
-            indexQueue = hzClient.getMap("hzIndexQueue");
+            indexQueue = client.getMap("hzIndexQueue");
         } catch (Exception ex) {
             ex.printStackTrace();
             System.exit(1);
@@ -68,13 +69,13 @@ public class MetacatIndexSizePoller {
         System.exit(0);
     }
 
-    private static void poll(IMap<Identifier, IndexTask> queue) {
+    private static void poll(IMap<Identifier, Object> queue) {
         int count = duration / delay;
 
         // Poll the queue size up to `count` times
         for (int i = 0; i < count; i++) {
             try {
-                indexQueue = hzClient.getMap("hzIndexQueue");
+                indexQueue = client.getMap("hzIndexQueue");
                 int size = indexQueue.size();
 
                 System.out.println(size);
@@ -91,8 +92,8 @@ public class MetacatIndexSizePoller {
         }
     }
 
-    private static void listAll(IMap<Identifier, IndexTask>  queue) {
-        Iterator<Map.Entry<Identifier, IndexTask>> it = queue.entrySet().iterator();
+    private static void listAll(IMap<Identifier, Object>  queue) {
+        Iterator<Map.Entry<Identifier, Object>> it = queue.entrySet().iterator();
 
         while (it.hasNext()) {
             Map.Entry entry = it.next();

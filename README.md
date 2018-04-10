@@ -17,13 +17,14 @@ ssh -L 5701:localhost:5701 {REMOTE_HOST}
 _Replace with the appropriate Hazelcast `groupName` and `groupPassword`_
 
 ```sh
-mvn exec:java -Dexec.mainClass="MetacatIndexSizePoller" -Dexec.args="groupName={NAME} groupPassword={PASSWORD}"
+mvn exec:java -Dexec.mainClass="Main" -Dexec.args="groupName={NAME} groupPassword={PASSWORD}"
 ```
 
 ## Options
 
 Configurable options include:
 
+- `action`: One of 'poll' (polls index size) or 'list' (lists items in index queue).
 - `address`: The address of the Hazelcast cluster. Default: `127.0.0.1:5701`.
 - `groupName`: The `groupName` for the Hazelcast cluster. Default: `''`.
 - `groupPassword`: The `groupPassword` for hte Hazelcast cluster. Default: `''`.
@@ -33,5 +34,5 @@ Configurable options include:
 Override any of these by adding to `-Dexec.args` (see above for an example) following a pattern of `{option}={value}`. For example, to set a custom delay of 6 seconds, run:
 
 ```sh
-mvn exec:java -Dexec.mainClass="MetacatIndexSizePoller" -Dexec.args="delay=6000"
+mvn exec:java -Dexec.mainClass="Main" -Dexec.args="delay=6000"
 ```
