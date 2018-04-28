@@ -4,6 +4,16 @@ Java mini-utility to periodically poll a Metacat index task queue (a Hazelcast M
 
 ## Running
 
+0. Install `metacat-common`
+
+This project depends on [metacat-common](https://github.com/nceas/metacat) which isn't on Maven so you'll need to install it first:
+
+```sh
+git clone https://github.com/nceas/metacat
+cd metacat/metacat-common
+mvn install
+```
+
 1. Set up an SSH tunnel to the host (Optional if you run this on the same host as Metacat)
 
 _Replace with the appropriate `{REMOTE_HOST}`_
@@ -33,12 +43,16 @@ java -cp target/metacat-index-poller-1.0-SNAPSHOT-jar-with-dependencies.jar edu.
 
 Configurable options include:
 
-- `action`: One of 'poll' (polls index size) or 'list' (lists items in index queue).
+- `action`: One of:
+  - `poll`: Periodically displays the size of the index queue
+  - `list`: Lists the tasks in the index queue by PID
+  - `evict` Evicts a task in the index queue by PID
 - `address`: The address of the Hazelcast cluster. Default: `127.0.0.1:5701`.
 - `groupName`: The `groupName` for the Hazelcast cluster. Default: `''`.
 - `groupPassword`: The `groupPassword` for hte Hazelcast cluster. Default: `''`.
 - `delay`: The number of milliseconds of delay between polling attempts. Default: `5000`.
 - `duration`: The number of milliseconds to poll for. Default: `60000`.
+- `pid`: The PID of the index queue task to evict. Only used if `action` is `evict`.
 
 Override any of these by adding to `-Dexec.args` (see above for an example) following a pattern of `{option}={value}`. For example, to set a custom delay of 6 seconds, run:
 
