@@ -1,6 +1,7 @@
 package edu.ucsb.nceas;
 
 import java.util.Map;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -157,12 +158,7 @@ public class MetacatIndexPoller {
         for (String arg : args) {
             String[] tokens = arg.split("[=]");
 
-            if (tokens.length != 2) {
-                System.out.println("Failed to parse argument `" + arg + "`.");
-                continue;
-            }
-
-            options.put(tokens[0].trim(), tokens[1].trim());
+            options.put(tokens[0].trim(), String.join("=", Arrays.copyOfRange(tokens, 1, tokens.length )));
         }
 
         for (String key : options.keySet()) {
